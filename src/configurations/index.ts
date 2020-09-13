@@ -29,6 +29,10 @@ export interface IAWSConfiguration {
   secretAccessKey: string
 }
 
+export interface IAppConfiguration {
+  analyticsDayRangeThreshold: number
+}
+
 export function getDatabaseConfig(): IDataConfiguration {
   return configs.get("database");
 }
@@ -43,4 +47,8 @@ export function getQueueConfigs() {
 
 export function getAWSConfigs(): IAWSConfiguration {
   return configs.get("aws");
+}
+
+export function getAppConfigs(): IAppConfiguration {
+  return configs.get("app");
 }

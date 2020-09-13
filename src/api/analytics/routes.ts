@@ -23,7 +23,7 @@ export default function (
       description: "Get top search products",
       validate: {
         query: Joi.object({
-          from: Joi.date().required(),
+          from: Joi.string().required(),
           to: Joi.string().required(),
           top: Joi.number().default(10)
         }),
@@ -52,8 +52,8 @@ export default function (
       description: "Get top search brands",
       validate: {
         query: Joi.object({
-          from: Joi.date().required(),
-          to: Joi.date().required(),
+          from: Joi.string().required(),
+          to: Joi.string().required(),
           top: Joi.number().default(10)
         }),
         headers: Validators.jwtValidator
@@ -81,8 +81,8 @@ export default function (
       description: "Get top view products",
       validate: {
         query: Joi.object({
-          from: Joi.date().required(),
-          to: Joi.date().required(),
+          from: Joi.string().required(),
+          to: Joi.string().required(),
           top: Joi.number().default(10)
         }),
         headers: Validators.jwtValidator

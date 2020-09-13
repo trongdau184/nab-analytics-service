@@ -40,7 +40,6 @@ export default class AnalyticsController implements IAnalyticsController {
     public async getTopSearchProducts(request: Hapi.Request, h: Hapi.ResponseToolkit) {
         try {
             let from = new Date(request.query["from"].toString());
-            //let f = moment.utc(request.query["from"].toString());
             let to = new Date(request.query["to"].toString());
             let top = parseInt(request.query["top"].toString());
             let result = await this.service.getTopSearchProducts(from, to, top);

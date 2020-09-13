@@ -16,6 +16,9 @@
       "region": "us-east-2",
       "accessKeyId": "AKIARAJJGJXRU2YE6BIJ",
       "secretAccessKey": "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"
+    },
+    "app": {
+      "analyticsDayRangeThreshold": 30
     }
   }
   

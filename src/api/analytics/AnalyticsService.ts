@@ -41,53 +41,71 @@ export default class AnalyticsService implements IAnalyticsService {
     }
     
     public async getTopSearchProducts(from: Date, to: Date, top: number) {
-        from = DateTimeHelper.getStartOfDay(from);
-        to = DateTimeHelper.getEndOfDay(to);
-        let result = await this.searchProductRepository.getTopSearchProducts(from, to, top);
-        //TODO Only call worker to generate the statistics once [from...to] is over 30 days.
-        let queues = Configs.getQueueConfigs();
-        let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
-        let message = {
-            type: MESSAGE_TYPES.TOP_SEARCH_PRODUCTS,
-            from: from, 
-            to: to, 
-            top: top
-        };
-        SQSClient.sendMessage(analyticsQueueUrl, message);
+        from = DateTimeHelper.setBeginDay(from);
+        to = DateTimeHelper.setEndDay(to);
+        let result = [];
+        // Only call worker to generate the statistics once [from...to] is over 30 days.
+        let daysDiff = DateTimeHelper.getDaysDiff(from, to);
+        let appConfigs = Configs.getAppConfigs();
+        if (daysDiff >= appConfigs.analyticsDayRangeThreshold) {
+            let queues = Configs.getQueueConfigs();
+            let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
+            let message = {
+                type: MESSAGE_TYPES.TOP_SEARCH_PRODUCTS,
+                from: from, 
+                to: to,
+                top: top
+            };
+            SQSClient.sendMessage(analyticsQueueUrl, message);
+        } else {
+            result = await this.searchProductRepository.getTopSearchProducts(from, to, top);
+        }
         return {items: result};
     }
 
     public async getTopSearchBrands(from: Date, to: Date, top: number) {
         from = DateTimeHelper.getStartOfDay(from);
         to = DateTimeHelper.getEndOfDay(to);
-        let result = await this.searchProductRepository.getTopSearchBrands(from, to, top);
-        //TODO Only call worker to generate the statistics once [from...to] is over 30 days.
-        let queues = Configs.getQueueConfigs();
-        let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
-        let message = {
-            type: MESSAGE_TYPES.TOP_SEARCH_BRANDS,
-            from: from, 
-            to: to, 
-            top: top
-        };
-        SQSClient.sendMessage(analyticsQueueUrl, message);
+        let result = [];
+        // Only call worker to generate the statistics once [from...to] is over 30 days.
+        let daysDiff = DateTimeHelper.getDaysDiff(from, to);
+        let appConfigs = Configs.getAppConfigs();
+        if (daysDiff >= appConfigs.analyticsDayRangeThreshold) {
+            let queues = Configs.getQueueConfigs();
+            let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
+            let message = {
+                type: MESSAGE_TYPES.TOP_SEARCH_BRANDS,
+                from: from, 
+                to: to, 
+                top: top
+            };
+            SQSClient.sendMessage(analyticsQueueUrl, message);
+        } else {
+            result = await this.searchProductRepository.getTopSearchBrands(from, to, top);
+        }
         return {items: result};
     }
 
     public async getTopViewProducts(from: Date, to: Date, top: number) {
         from = DateTimeHelper.getStartOfDay(from);
         to = DateTimeHelper.getEndOfDay(to);
-        let result = await this.viewProductRepository.getTopViewProducts(from, to, top);
-        //TODO Only call worker to generate the statistics once [from...to] is over 30 days.
-        let queues = Configs.getQueueConfigs();
-        let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
-        let message = {
-            type: MESSAGE_TYPES.TOP_VIEW_PRODUCTS,
-            from: from, 
-            to: to, 
-            top: top
-        };
-        SQSClient.sendMessage(analyticsQueueUrl, message);
+        let result = [];
+        // Only call worker to generate the statistics once [from...to] is over 30 days.
+        let daysDiff = DateTimeHelper.getDaysDiff(from, to);
+        let appConfigs = Configs.getAppConfigs();
+        if (daysDiff >= appConfigs.analyticsDayRangeThreshold) {
+            let queues = Configs.getQueueConfigs();
+            let analyticsQueueUrl = queues[QUEUE_URLS.ANALYTICS_QUEUE];
+            let message = {
+                type: MESSAGE_TYPES.TOP_VIEW_PRODUCTS,
+                from: from, 
+                to: to, 
+                top: top
+            };
+            SQSClient.sendMessage(analyticsQueueUrl, message);
+        } else {
+            result = await this.viewProductRepository.getTopViewProducts(from, to, top);
+        }
         return {item: result};
     }
 }
