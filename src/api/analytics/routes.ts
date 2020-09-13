@@ -24,8 +24,8 @@ export default function (
       validate: {
         query: Joi.object({
           from: Joi.date().required(),
-          to: Joi.date().required(),
-          top: Joi.number().required()
+          to: Joi.string().required(),
+          top: Joi.number().default(10)
         }),
         headers: Validators.jwtValidator
       },
@@ -54,7 +54,7 @@ export default function (
         query: Joi.object({
           from: Joi.date().required(),
           to: Joi.date().required(),
-          top: Joi.number().required()
+          top: Joi.number().default(10)
         }),
         headers: Validators.jwtValidator
       },
@@ -83,7 +83,7 @@ export default function (
         query: Joi.object({
           from: Joi.date().required(),
           to: Joi.date().required(),
-          top: Joi.number().required()
+          top: Joi.number().default(10)
         }),
         headers: Validators.jwtValidator
       },
@@ -129,13 +129,14 @@ export default function (
     method: "POST",
     path: "/analytics/recordViewProduct",
     options: {
-      handler: controller.recordSearchProduct,
-      auth: "jwt",
+      handler: controller.recordViewProduct,
+      //auth: "jwt",
+      auth: false,
       tags: ["api", "analytics"],
       description: "Record a view on product",
       validate: {
         payload: AnalyticsValidator.recordViewProductValidator,
-        headers: Validators.jwtValidator
+        //headers: Validators.jwtValidator
       },
       plugins: {
         "hapi-swagger": {

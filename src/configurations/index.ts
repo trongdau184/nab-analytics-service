@@ -23,10 +23,24 @@ export interface IDataConfiguration {
   connectionString: string;
 }
 
+export interface IAWSConfiguration {
+  region: string,
+  accessKeyId: string,
+  secretAccessKey: string
+}
+
 export function getDatabaseConfig(): IDataConfiguration {
   return configs.get("database");
 }
 
 export function getServerConfigs(): IServerConfigurations {
   return configs.get("server");
+}
+
+export function getQueueConfigs() {
+  return configs.get("queues");
+}
+
+export function getAWSConfigs(): IAWSConfiguration {
+  return configs.get("aws");
 }

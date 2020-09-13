@@ -8,6 +8,14 @@
       "jwtExpiration": "1h",
       "routePrefix": "",
       "plugins": ["logger", "jwt-auth", "swagger"]
+    },
+    "queues": {
+      "analyticsQueueURL": "https://sqs.us-east-2.amazonaws.com/069342744035/analytics"
+    },
+    "aws": {
+      "region": "us-east-2",
+      "accessKeyId": "AKIARAJJGJXRU2YE6BIJ",
+      "secretAccessKey": "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"
     }
   }
   

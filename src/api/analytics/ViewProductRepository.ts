@@ -17,17 +17,6 @@ export default class ViewProductRepository extends BaseRepository implements IVi
                     "viewAt": {$gte: from, $lte: to}
                 }
             },
-            {
-                $lookup: {
-                    from: "Products",
-                    localField: "productId",
-                    foreignField: "_id",
-                    as: "product"
-                }
-            },
-            {
-                "$unwind": "$product"
-            },
         ];
 
         let query = ViewProductModel.aggregate(pipeline).group({
@@ -38,6 +27,13 @@ export default class ViewProductRepository extends BaseRepository implements IVi
         })
         .sort({"count": -1})
         .limit(top)
+        .lookup({
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "product"
+        })
+        .unwind("$product")
         .project({
             _id: 0,
             name: "$product.name",
