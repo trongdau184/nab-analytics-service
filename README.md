@@ -32,10 +32,12 @@ The most benefit of micro-services architecture is ease of scaling, since the se
 ![View product sequence diagram](https://github.com/trongdau184/nab-analytics-service/blob/master/View-product-diagram.png?raw=true)
 
 * Generate Normal Reports sequence diagram (top searching products, top searching brands, top viewed products report)
+
 ![Generate Normal Reports](https://github.com/trongdau184/nab-analytics-service/blob/master/Normal-reports-diagram.png?raw=true)
     * If the query date range is not over 30 days (it might not take long to time to generate), the Analytic Service will aggregate and issue report data by itself.
 
 * Generate Long Time Reports (which query date range is over 30 days) sequence diagram
+
 ![Generate Normal Reports](https://github.com/trongdau184/nab-analytics-service/blob/master/Long-time-report-diagram.png?raw=true)
     * If the query date range is over 30 days (it might take long to time to generate), the Analytic Service doesn't issue report data immediately, instead of that, it sends a generating report message to the Amazon SQS. The message contains the type of report (top searching products, top searching brands, top viewed product) and query date range.
     * The Analytics Worker receives the message, then based on the report type, it aggregates the data from MongoDB and returns the report data to Client (can be done via WebSocket which is not described in the diagram)
@@ -88,17 +90,19 @@ The most benefit of micro-services architecture is ease of scaling, since the se
 * 3 Layers Pattern: Controller - Service - Repository
 * Inversion of control: make components loose coupling
 * Highly reusable: Quickly to add new Rest API for resource with basic CRUD. Developer just needs to create route file, define the new Controller, create new Service class which extends BaseService class without adding any code, create new Repository class which extends BaseRepository class without adding any code, and add needed validators, DTOs. That's all.
+* Generic Method
 * SOLID, KISS
 
 **Frameworks & Libraries**
 * Hapi: NodeJS API framework
-* Boom: Generate Htpp friendly error objects
+* Boom: Generate Http friendly error objects
 * Good: Hapi process monitoring
 * hapi-auth-jwt2: hapi authentication plugin uses JWT token
 * Joi: request payload or model validation
 * inversify: Inversion of control (IOC) container.
+* nconf: define configuration file for each environment
 * axios: send http request
-* mongoose: ODM for MongoDB 
+* mongoose: ODM for MongoDB
 * aws-sdk: Amazon SDK
 * lodash: JavaScript utility library
 * moment: JavaScript Date Time library
@@ -167,7 +171,7 @@ Call login API first to get the token, then set it to the "authorization" in the
 curl -X GET "http://localhost:4000/analytics/getTopSearchBrands?from=2020-09-01T00%3A00%3A00.000Z&to=2020-09-15T23%3A59%3A59.999Z&top=10" -H  "accept: application/json" -H  "authorization: token"
 ```
 
-* Get top view produtcs
+* Get top viewed products
 Call login API first to get the token, then set it to the "authorization" in the header.
 ```bash
 curl -X GET "http://localhost:4000/analytics/getTopViewProducts?from=2020-09-01T00%3A00%3A00.000Z&to=2020-09-15T23%3A59%3A59.999Z&top=10" -H  "accept: application/json" -H  "authorization: token"
