@@ -130,13 +130,12 @@ export default function (
     path: "/analytics/recordViewProduct",
     options: {
       handler: controller.recordViewProduct,
-      //auth: "jwt",
-      auth: false,
+      auth: "jwt",
       tags: ["api", "analytics"],
       description: "Record a view on product",
       validate: {
         payload: AnalyticsValidator.recordViewProductValidator,
-        //headers: Validators.jwtValidator
+        headers: Validators.jwtValidator
       },
       plugins: {
         "hapi-swagger": {
